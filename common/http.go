@@ -44,17 +44,21 @@ func Post(url string, req interface{}, data interface{}) (response *http.Respons
 
 // Request execute a request with headers and method setup
 func Request(method string, headers Headers, url string, req interface{}, data interface{}) (response *http.Response, err error) {
-	var reqBody []byte
 	var request *http.Request
+	var body *bytes.Buffer
 
-	// Encode the request
-	reqBody, err = json.Marshal(req)
-	if err != nil {
-		return
+	if method == "POST" {
+		var reqBody []byte
+		// Encode the request
+		reqBody, err = json.Marshal(req)
+		if err != nil {
+			return
+		}
+		body = bytes.NewBuffer(reqBody)
 	}
 
 	// Create the request
-	request, err = http.NewRequest(method, url, bytes.NewBuffer(reqBody))
+	request, err = http.NewRequest(method, url, body)
 	if err != nil {
 		return
 	}
