@@ -18,7 +18,7 @@ const (
 // GetUserByIDResult match the result of the end point requested
 type GetUserByIDResult struct {
 	Status ResultStatus
-	Data   struct {
+	Data   []struct {
 		Email         string            `json:"email"`
 		ID            int64             `json:"id"`
 		Status        int               `json:"status"`
