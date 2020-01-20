@@ -45,7 +45,6 @@ func Post(url string, req interface{}, data interface{}) (response *http.Respons
 // Request execute a request with headers and method setup
 func Request(method string, headers Headers, url string, req interface{}, data interface{}) (response *http.Response, err error) {
 	var request *http.Request
-	var body *bytes.Buffer
 
 	if method == "POST" {
 		var reqBody []byte
@@ -54,11 +53,12 @@ func Request(method string, headers Headers, url string, req interface{}, data i
 		if err != nil {
 			return
 		}
-		body = bytes.NewBuffer(reqBody)
+		// Create the request
+		request, err = http.NewRequest(method, url, bytes.NewBuffer(reqBody))
+	} else {
+		request, err = http.NewRequest(method, url, nil)
 	}
 
-	// Create the request
-	request, err = http.NewRequest(method, url, body)
 	if err != nil {
 		return
 	}
