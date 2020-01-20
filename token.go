@@ -58,6 +58,10 @@ func (t *OAuthTokenResult) getToken(a *API) (err error) {
 	if t.ResultStatus.Error {
 		err = fmt.Errorf("APIToken error: %s", t.ResultStatus.Message)
 	}
+
+	if t.AccessToken == "" {
+		err = fmt.Errorf("APIToken error: Enable to obtain Access Token thanks to API keys")
+	}
 	return
 }
 
