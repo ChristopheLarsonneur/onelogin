@@ -60,7 +60,7 @@ func (t *OAuthTokenResult) getToken(a *API) (err error) {
 	}
 
 	if t.AccessToken == "" {
-		err = fmt.Errorf("APIToken error: Enable to obtain Access Token thanks to API keys")
+		err = fmt.Errorf("APIToken error: Unable to obtain Access Token thanks to API keys. Do you need to enable the API keys?")
 	}
 	return
 }
