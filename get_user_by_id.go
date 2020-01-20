@@ -20,11 +20,11 @@ type GetUserByIDResult struct {
 	Status ResultStatus
 	Data   struct {
 		Email         string            `json:"email"`
-		ID            int16             `json:"id"`
+		ID            int64             `json:"id"`
 		Status        int               `json:"status"`
 		State         int               `json:"state"`
 		RolesID       []int16           `json:"role_id"`
-		ManagerUserID int16             `json:"manager_user_id"`
+		ManagerUserID int64             `json:"manager_user_id"`
 		MemberOf      string            `json:"member_of"`
 		CustomAttrs   map[string]string `json:"custom_attributes"`
 	} `json:"data"`
@@ -34,14 +34,14 @@ type GetUserByIDResult struct {
 type GetUserByIDRequest struct {
 }
 
-// NewGetUserByIDResult return a new object VerifyFactorResult
-func NewGetUserByIDResult() (ret *GetUserByIDResult) {
+// NewGetUserByID return a new object VerifyFactorResult
+func NewGetUserByID() (ret *GetUserByIDResult) {
 	ret = new(GetUserByIDResult)
 	return
 }
 
 // Get the request as defined by the API
-func (r *GetUserByIDResult) Get(a *API, id int16) (response *http.Response, err error) {
+func (r *GetUserByIDResult) Get(a *API, id int64) (response *http.Response, err error) {
 	if r == nil {
 		return nil, errors.New("GetUserByIDResult is nil")
 	}
