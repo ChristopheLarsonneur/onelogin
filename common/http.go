@@ -3,6 +3,7 @@ package common
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -76,6 +77,19 @@ func Request(method string, headers Headers, url string, req interface{}, data i
 
 	buf, _ := ioutil.ReadAll(response.Body)
 	err = json.Unmarshal(buf, data)
+
+	return
+}
+
+// BuildURI creates a URI given with path args
+// Returns a URI
+func BuildURI(uri string, args ...interface{}) (ret string) {
+	// Handle cases where the uri requires variable replacements (ie.  /api/1/user/%d/roles)
+	ret = uri
+
+	if len(args) > 0 {
+		ret = fmt.Sprintf(uri, args...)
+	}
 
 	return
 }
