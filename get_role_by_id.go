@@ -12,7 +12,7 @@ import (
 const (
 	// GetRoleByIDURIPath defined the API Path for such request.
 	// As defined by https://developers.onelogin.com/api-docs/1/roles/get-role-by-id
-	GetUserByIDURIPath = "api/1/roles/%d"
+	GetRoleByIDURIPath = "api/1/roles/%d"
 )
 
 // GetRoleByIDResult match the result of the end point requested
@@ -24,8 +24,8 @@ type GetRoleByIDResult struct {
 	} `json:"data"`
 }
 
-// GetUserByIDRequest is the input request structure for this API call.
-type GetUserByIDRequest struct {
+// GetRoleByIDRequest is the input request structure for this API call.
+type GetRoleByIDRequest struct {
 }
 
 // NewGetUserByID return a new object VerifyFactorResult
