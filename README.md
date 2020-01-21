@@ -11,9 +11,21 @@ import (
 )
 
 func main() {
-    ol := onelogin.NewAPI("eu", string(clientID), string(clientSecret), "myCompany", logging.INFO)
-    err := ol.ObtainAPIAccess() // required to be authorized to call the API.
+    ol := onelogin.NewService("eu", string(clientID), string(clientSecret), "myCompany", logging.INFO)
+    olAPI, err := ol.GetAPI() // Get API object with access token.
 
-    
+    if err != nil {
+        log.Fatalf("%s", err)
+    }
+
+    user := api.NewGetUserByID()
+    user.Get(olAPI, 12345)
+
+    if roles, err := ol.GetRoles() ; err != nil {
+        log.Fatalf("%s", err)
+    } else {
+        ...
+    }
+    ...
 }
 ```
