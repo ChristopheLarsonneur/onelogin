@@ -210,6 +210,15 @@ func (o *Service) GetRoles() (ret map[int64]string, err error) {
 	return
 }
 
+// GetAPI provide the OneLogin api obejct and access to it. (access token)
+func (o *Service) GetAPI() (apiCore *api.Core, err error) {
+	if err = o.initCheck() ; err != nil {
+		return
+	}
+	apiCore = o.core
+	return
+}
+
 // GetRoleName return a role name from the role ID
 func (o *Service) GetRoleName(id int64) (ret string, err error) {
 	if err = o.initCheck() ; err != nil {
