@@ -2,6 +2,7 @@ package onelogin
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -20,7 +21,10 @@ const (
 // Service is the core OneLogin service object, connected to the OneLogin Service through the API (api.Core).
 type Service struct {
 	core *api.Core
+	lastError error
 
+	allRolesLoaded bool
+	roles map[int64]string
 }
 
 // NewService create the main API object
@@ -29,6 +33,7 @@ func NewService(shard string, clientID string, clientSecret string, subdomain st
 	ret.core = api.NewAPI(shard, clientID, clientSecret, subdomain)
 	ret.SetLogLevel(loglevel)
 
+	ret.roles = make(map[int64]string)
 	return
 }
 
@@ -39,6 +44,10 @@ func (o *Service) SetLogLevel(loglevel logging.Level) {
 
 // SAMLAuthenticate used to authenticate a user thanks to SAML
 func (o *Service) SAMLAuthenticate(user, pass, appID, ip string, mfa, deviceIndex int) (result *AwsSAMLAssertion, err error) {
+	if err = o.initCheck() ; err != nil {
+		return
+	}
+
 	result = NewAwsSAMLAssertion(user, pass)
 	assertion := api.NewSAMLAssertionResult()
 	_, err = assertion.Post(o.core, user, pass, appID, o.core.SubDomain, ip)
@@ -137,6 +146,88 @@ func (o *Service) SAMLAuthenticate(user, pass, appID, ip string, mfa, deviceInde
 	}
 	if verifyFactor.Status.Error {
 		err = fmt.Errorf("%s: %s", verifyFactor.Status.Type, verifyFactor.Status.Message)
+	}
+	return
+}
+
+// CleanError cleanup the last error reported by onelogin API call.
+func (o *Service) CleanError() {
+	if o == nil {
+		return
+	}
+	o.lastError = nil
+}
+
+func (o *Service) setError(err error) error {
+	if o == nil {
+		return errors.New("onelogin.Service is nil")
+	}
+	o.lastError = err
+	return err
+}
+
+// initCheck basically check initial onelogin object status and obtain API access.
+func (o *Service) initCheck() (_ error) {
+	if o == nil {
+		return errors.New("onelogin.Service is nil")
+	}
+	if  o.core == nil {
+		return errors.New("onelogin.api.Core is nil")
+	}
+
+	if o.lastError != nil {
+		return fmt.Errorf("onelogin.Core is always in error: %s", o.lastError)
+	}
+
+	if o.core.Token.AccessToken == "" {
+		if err := o.setError(o.core.ObtainAPIAccess()) ; err != nil {
+			return err
+		}
+	}
+	return
+}
+
+// GetRoles return the list of all roles from OneLogin
+func (o *Service) GetRoles() (ret map[int64]string, err error) {
+	if err = o.initCheck() ; err != nil {
+		return
+	}
+
+	if o.allRolesLoaded {
+		ret = o.roles
+		return 
+	}
+
+	roles := api.NewGetRoles()
+	if _, err = roles.Get(o.core) ; err != nil {
+		return ret, o.setError(err)
+	}
+
+	for _, role := range roles.Data {
+		o.roles[role.ID] = role.Name
+	}
+	ret = o.roles
+	return
+}
+
+// GetRoleName return a role name from the role ID
+func (o *Service) GetRoleName(id int64) (ret string, err error) {
+	if err = o.initCheck() ; err != nil {
+		return
+	}
+
+	if v, found := o.roles[id] ; found {
+		return v, nil
+	}
+
+	role := api.NewGetRoleByID()
+
+	if _, err = role.Get(o.core, id) ; err != nil {
+		return ret, err
+	}
+	if len(role.Data) >= 1 {
+		ret = role.Data[0].Name
+		o.roles[id] = ret
 	}
 	return
 }
