@@ -179,7 +179,7 @@ func (o *Service) initCheck() (_ error) {
 		return fmt.Errorf("onelogin.Core is always in error: %s", o.lastError)
 	}
 
-	if o.core.Token.AccessToken == "" {
+	if o.core.Token == nil || o.core.Token.AccessToken == "" {
 		if err := o.setError(o.core.ObtainAPIAccess()) ; err != nil {
 			return err
 		}
