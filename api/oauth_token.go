@@ -1,4 +1,4 @@
-package onelogin
+package api
 
 import (
 	"encoding/base64"
@@ -34,7 +34,7 @@ func NewOAuthTokenResult() (ret *OAuthTokenResult) {
 }
 
 // Obtain get or refresh a token to manage the OneLogin API
-func (t *OAuthTokenResult) Obtain(a *API) (err error) {
+func (t *OAuthTokenResult) Obtain(a *Core) (err error) {
 	if t.isExpired() {
 		return t.getToken(a)
 	}
@@ -42,7 +42,7 @@ func (t *OAuthTokenResult) Obtain(a *API) (err error) {
 	return nil
 }
 
-func (t *OAuthTokenResult) getToken(a *API) (err error) {
+func (t *OAuthTokenResult) getToken(a *Core) (err error) {
 	url := a.GetURL(TokenURIPath)
 
 	input := TokenRequest{

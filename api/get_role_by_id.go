@@ -1,4 +1,4 @@
-package onelogin
+package api
 
 import (
 	"errors"
@@ -18,10 +18,7 @@ const (
 // GetRoleByIDResult match the result of the end point requested
 type GetRoleByIDResult struct {
 	Status ResultStatus
-	Data   []struct {
-		ID   int64  `json:"id"`
-		Name string `json:"name"`
-	} `json:"data"`
+	Data   Roles `json:"data"`
 }
 
 // GetRoleByIDRequest is the input request structure for this API call.
@@ -35,7 +32,7 @@ func NewGetRoleByID() (ret *GetRoleByIDResult) {
 }
 
 // Get the request as defined by the API
-func (r *GetRoleByIDResult) Get(a *API, id int64) (response *http.Response, err error) {
+func (r *GetRoleByIDResult) Get(a *Core, id int64) (response *http.Response, err error) {
 	if r == nil {
 		return nil, errors.New("GetRoleByIDResult is nil")
 	}

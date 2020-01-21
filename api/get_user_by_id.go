@@ -1,4 +1,4 @@
-package onelogin
+package api
 
 import (
 	"errors"
@@ -41,7 +41,7 @@ func NewGetUserByID() (ret *GetUserByIDResult) {
 }
 
 // Get the request as defined by the API
-func (r *GetUserByIDResult) Get(a *API, id int64) (response *http.Response, err error) {
+func (r *GetUserByIDResult) Get(a *Core, id int64) (response *http.Response, err error) {
 	if r == nil {
 		return nil, errors.New("GetUserByIDResult is nil")
 	}

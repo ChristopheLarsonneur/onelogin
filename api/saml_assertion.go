@@ -1,4 +1,4 @@
-package onelogin
+package api
 
 import (
 	"encoding/json"
@@ -36,7 +36,7 @@ func NewSAMLAssertionResult() (ret *SAMLAssertionResult) {
 }
 
 // Post the SAMLAssertion request and saved it to the SAMLAssertionResult
-func (r *SAMLAssertionResult) Post(a *API, user, pass, appID, subDomain, IP string) (response *http.Response, err error) {
+func (r *SAMLAssertionResult) Post(a *Core, user, pass, appID, subDomain, IP string) (response *http.Response, err error) {
 	if r == nil {
 		return nil, errors.New("SAMLAssertionResult is nil")
 	}

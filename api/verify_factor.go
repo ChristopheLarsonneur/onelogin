@@ -1,9 +1,9 @@
-package onelogin
+package api
 
 import (
 	"errors"
-	"net/http"
 	"github.com/clarsonneur/onelogin/common"
+	"net/http"
 	"strconv"
 )
 
@@ -37,7 +37,7 @@ func NewVerifyFactorResult() (ret *VerifyFactorResult) {
 }
 
 // Post the request as defined by the API
-func (r *VerifyFactorResult) Post(a *API, appID string, deviceID int, stateToken, OTPToken string, doNotNotify bool) (response *http.Response, err error) {
+func (r *VerifyFactorResult) Post(a *Core, appID string, deviceID int, stateToken, OTPToken string, doNotNotify bool) (response *http.Response, err error) {
 	if r == nil {
 		return nil, errors.New("VerifyFactorResult is nil")
 	}

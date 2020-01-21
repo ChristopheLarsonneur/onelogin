@@ -1,4 +1,4 @@
-package onelogin
+package api
 
 // SAMLAssertionDataResult describe the typical Data result
 type SAMLAssertionDataResult struct {
