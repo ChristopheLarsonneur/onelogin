@@ -18,16 +18,7 @@ const (
 // GetUserByIDResult match the result of the end point requested
 type GetUserByIDResult struct {
 	Status ResultStatus
-	Data   []struct {
-		Email         string            `json:"email"`
-		ID            int64             `json:"id"`
-		Status        int               `json:"status"`
-		State         int               `json:"state"`
-		RolesID       []int64           `json:"role_id"`
-		ManagerUserID int64             `json:"manager_user_id"`
-		MemberOf      string            `json:"member_of"`
-		CustomAttrs   map[string]string `json:"custom_attributes"`
-	} `json:"data"`
+	Data   Users `json:"data"`
 }
 
 // GetUserByIDRequest is the input request structure for this API call.
