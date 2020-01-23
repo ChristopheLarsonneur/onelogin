@@ -46,7 +46,7 @@ func Post(url string, req interface{}, data interface{}) (response *http.Respons
 func Request(method string, headers Headers, url string, req interface{}, data interface{}) (response *http.Response, err error) {
 	var request *http.Request
 
-	if method == "POST" {
+	if method == "POST" || method == "PUT" {
 		var reqBody []byte
 		// Encode the request
 		reqBody, err = json.Marshal(req)
