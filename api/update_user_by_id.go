@@ -38,6 +38,6 @@ func (r *PutUserByIDResult) Put(a *Core, id int64, input PutUserRequest) (respon
 		return nil, errors.New("PutUserByIDResult is nil")
 	}
 
-	response, err = common.Request("PUT", a.getBearerHeaders(), a.GetURL(common.BuildURI(UpdateUserByIDURIPath, id)), input, r)
+	response, err = common.Request("PUT", a.getBearerHeaders(), a.GetURL(UpdateUserByIDURIPath, id), input, r)
 	return
 }

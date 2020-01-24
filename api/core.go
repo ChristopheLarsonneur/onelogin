@@ -37,17 +37,13 @@ func NewAPI(shard string, clientID string, clientSecret string, subdomain string
 
 // GetURL creates a URL given the URI and any given args.
 // Returns a URL
-func (o *Core) GetURL(uri string, args ...string) string {
+// You can complete the URL with the query part, thanks to common.
+func (o *Core) GetURL(uri string, args ...interface{}) string {
 	// Handle cases where the uri requires variable replacements (ie.  /api/1/user/%d/roles)
 	fulluri := uri
 
 	if len(args) > 0 {
-		// Convert to slice of interface so that the slice can be sent in as a variadic argument
-		argint := make([]interface{}, len(args))
-		for index, value := range args {
-			argint[index] = value
-		}
-		fulluri = fmt.Sprintf(uri, argint...)
+		fulluri = fmt.Sprintf(uri, args...)
 	}
 
 	if o.CustomURL != "" {
