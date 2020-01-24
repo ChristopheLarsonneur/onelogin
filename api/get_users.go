@@ -51,7 +51,7 @@ func (r *GetUsersResult) Get(a *Core, queryOptions *QueryOptions) (response *htt
 	r.Pagination = ResultPagination{}
 
 	response, err = common.Request("GET", a.getBearerHeaders(), r.url.String(), nil, r)
-	return
+	return checkResponse(response, err, r.Status)
 }
 
 // Next return the next pagination result
@@ -75,5 +75,5 @@ func (r *GetUsersResult) Next(a *Core) (response *http.Response, err error) {
 	r.Pagination = ResultPagination{}
 
 	response, err = common.Request("GET", a.getBearerHeaders(), r.url.String(), nil, r)
-	return
+	return checkResponse(response, err, r.Status)
 }

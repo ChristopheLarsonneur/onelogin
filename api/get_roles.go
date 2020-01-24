@@ -40,5 +40,5 @@ func (r *GetRolesResult) Get(a *Core) (response *http.Response, err error) {
 	input := GetRolesResult{}
 
 	response, err = common.Request("GET", a.getBearerHeaders(), a.GetURL(GetRolesURIPath), input, r)
-	return
+	return checkResponse(response, err, r.Status)
 }

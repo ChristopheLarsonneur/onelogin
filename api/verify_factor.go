@@ -51,5 +51,5 @@ func (r *VerifyFactorResult) Post(a *Core, appID string, deviceID int, stateToke
 	}
 
 	response, err = common.Request("POST", a.getBearerHeaders(), a.GetURL(VerifyFactorURIPath), input, r)
-	return
+	return checkResponse(response, err, r.Status)
 }

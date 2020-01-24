@@ -40,5 +40,5 @@ func (r *GetRoleByIDResult) Get(a *Core, id int64) (response *http.Response, err
 	input := GetRoleByIDResult{}
 
 	response, err = common.Request("GET", a.getBearerHeaders(), a.GetURL(GetRoleByIDURIPath, id), input, r)
-	return
+	return checkResponse(response, err, r.Status)
 }

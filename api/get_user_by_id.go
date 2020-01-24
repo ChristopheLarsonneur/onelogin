@@ -40,5 +40,5 @@ func (r *GetUserByIDResult) Get(a *Core, id int64) (response *http.Response, err
 	input := GetUserByIDResult{}
 
 	response, err = common.Request("GET", a.getBearerHeaders(), a.GetURL(GetUserByIDURIPath, id), input, r)
-	return
+	return checkResponse(response, err, r.Status)
 }

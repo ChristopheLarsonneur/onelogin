@@ -39,5 +39,5 @@ func (r *PutUserByIDResult) Put(a *Core, id int64, input PutUserRequest) (respon
 	}
 
 	response, err = common.Request("PUT", a.getBearerHeaders(), a.GetURL(UpdateUserByIDURIPath, id), input, r)
-	return
+	return checkResponse(response, err, r.Status)
 }

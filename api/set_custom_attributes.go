@@ -38,5 +38,5 @@ func (r *PutUserAttrsResult) Put(a *Core, id int64, input PutUserAttrsRequest) (
 	}
 
 	response, err = common.Request("PUT", a.getBearerHeaders(), a.GetURL(SetCustomAttrsIDURIPath, id), input, r)
-	return
+	return checkResponse(response, err, r.Status)
 }
