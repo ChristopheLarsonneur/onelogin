@@ -102,3 +102,21 @@ func SetQuery(urlInput *url.URL, args map[string]string) (ret string) {
 	}
 	return
 }
+
+// UpdateQuery update an existing Query URL given with path args
+// Returns the query part (to set in Request.URL.RawQuery)
+func UpdateQuery(urlInput *url.URL, args map[string]string) (ret string) {
+	if urlInput == nil {
+		return
+	}
+
+	if len(args) > 0 {
+		q := urlInput.Query()
+		for key, value := range args {
+			q.Set(key, value)
+
+		}
+		urlInput.RawQuery = q.Encode()
+	}
+	return
+}

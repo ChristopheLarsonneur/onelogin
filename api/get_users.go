@@ -35,12 +35,15 @@ func NewGetUsers() (ret *GetUsersResult) {
 }
 
 // Get the request as defined by the API
-func (r *GetUsersResult) Get(a *Core) (response *http.Response, err error) {
+func (r *GetUsersResult) Get(a *Core, queryOptions *QueryOptions) (response *http.Response, err error) {
 	if r == nil {
 		return nil, errors.New("GetUsersResult is nil")
 	}
 
 	r.url, err = url.Parse(a.GetURL(GetUsersURIPath))
+	if queryOptions != nil {
+		common.SetQuery(r.url, queryOptions.getQueryParameters())
+	}
 	response, err = common.Request("GET", a.getBearerHeaders(), r.url.String(), nil, r)
 	return
 }
@@ -56,7 +59,7 @@ func (r *GetUsersResult) Next(a *Core) (response *http.Response, err error) {
 		return
 	}
 
-	common.SetQuery(r.url, map[string]string{
+	common.UpdateQuery(r.url, map[string]string{
 		"after_cursor": r.Pagination.AfterCursor},
 	)
 
