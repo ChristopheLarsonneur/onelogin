@@ -2,6 +2,7 @@ package common
 
 import (
 	"bytes"
+	"fmt"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -73,6 +74,10 @@ func Request(method string, headers Headers, url string, req interface{}, data i
 	response, err = client.Do(request)
 	if err != nil {
 		return nil, err
+	}
+
+	if response.StatusCode != 200 {
+		return response, fmt.Errorf("%s", response.Status)
 	}
 
 	defer response.Body.Close()
