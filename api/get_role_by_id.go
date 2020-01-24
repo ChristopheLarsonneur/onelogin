@@ -39,6 +39,6 @@ func (r *GetRoleByIDResult) Get(a *Core, id int64) (response *http.Response, err
 
 	input := GetRoleByIDResult{}
 
-	response, err = common.Request("GET", a.getBearerHeaders(), a.GetURL(common.BuildURI(GetRoleByIDURIPath, id)), input, r)
-	return
+	response, err = common.Request("GET", a.getBearerHeaders(), a.GetURL(GetRoleByIDURIPath, id), input, r)
+	return checkResponse(response, err, r.Status)
 }

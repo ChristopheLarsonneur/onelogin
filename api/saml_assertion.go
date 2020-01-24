@@ -50,5 +50,5 @@ func (r *SAMLAssertionResult) Post(a *Core, user, pass, appID, subDomain, IP str
 	}
 
 	response, err = common.Request("POST", a.getBearerHeaders(), a.GetURL(SAMLAssertionURIPath), input, r)
-	return
+	return checkResponse(response, err, r.Status)
 }

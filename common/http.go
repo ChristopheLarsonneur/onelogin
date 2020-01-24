@@ -3,9 +3,9 @@ package common
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
+	"net/url"
 )
 
 // Headers is a simple structure to list key/value pair on http request header.
@@ -85,15 +85,38 @@ func Request(method string, headers Headers, url string, req interface{}, data i
 	return
 }
 
-// BuildURI creates a URI given with path args
-// Returns a URI
-func BuildURI(uri string, args ...interface{}) (ret string) {
-	// Handle cases where the uri requires variable replacements (ie.  /api/1/user/%d/roles)
-	ret = uri
-
-	if len(args) > 0 {
-		ret = fmt.Sprintf(uri, args...)
+// SetQuery creates a Query URL given with path args
+// Returns the query part (to set in Request.URL.RawQuery)
+func SetQuery(urlInput *url.URL, args map[string]string) (ret string) {
+	if urlInput == nil {
+		return
 	}
 
+	if len(args) > 0 {
+		q := url.Values{}
+		for key, value := range args {
+			q.Add(key, value)
+
+		}
+		urlInput.RawQuery = q.Encode()
+	}
+	return
+}
+
+// UpdateQuery update an existing Query URL given with path args
+// Returns the query part (to set in Request.URL.RawQuery)
+func UpdateQuery(urlInput *url.URL, args map[string]string) (ret string) {
+	if urlInput == nil {
+		return
+	}
+
+	if len(args) > 0 {
+		q := urlInput.Query()
+		for key, value := range args {
+			q.Set(key, value)
+
+		}
+		urlInput.RawQuery = q.Encode()
+	}
 	return
 }
