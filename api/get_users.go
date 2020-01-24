@@ -44,6 +44,12 @@ func (r *GetUsersResult) Get(a *Core, queryOptions *QueryOptions) (response *htt
 	if queryOptions != nil {
 		common.SetQuery(r.url, queryOptions.getQueryParameters())
 	}
+
+	// cleanup before reading
+	r.Status = ResultStatus{}
+	r.Data = nil
+	r.Pagination = ResultPagination{}
+
 	response, err = common.Request("GET", a.getBearerHeaders(), r.url.String(), nil, r)
 	return
 }
@@ -55,13 +61,18 @@ func (r *GetUsersResult) Next(a *Core) (response *http.Response, err error) {
 		return nil, errors.New("GetUsersResult is nil")
 	}
 
-	if q := r.url.Query(); q.Get("after_cursor") == r.Pagination.AfterCursor {
+	if r.Pagination.AfterCursor == "" {
 		return
 	}
 
 	common.UpdateQuery(r.url, map[string]string{
 		"after_cursor": r.Pagination.AfterCursor},
 	)
+
+	// cleanup before reading
+	r.Status = ResultStatus{}
+	r.Data = nil
+	r.Pagination = ResultPagination{}
 
 	response, err = common.Request("GET", a.getBearerHeaders(), r.url.String(), nil, r)
 	return
