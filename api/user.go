@@ -12,5 +12,6 @@ type User struct {
 	MemberOf      string            `json:"member_of"`
 	Firstname     string            `json:"firstname"`
 	Lastname      string            `json:"lastname"`
+	Department    string            `json:"department"`
 	CustomAttrs   map[string]string `json:"custom_attributes"`
 }
