@@ -35,3 +35,14 @@ type User struct {
 	Department    string            `json:"department"`
 	CustomAttrs   map[string]string `json:"custom_attributes"`
 }
+
+// IsActive return true when the user is approved and not suspended or unactivated.
+func (u *User) IsActive() (isActive bool) {
+	if u == nil {
+		return
+	}
+	if u.State == StateApproved && u.Status != StatusUnactivated && u.Status != StatusSuspended {
+		isActive = true
+	}
+	return
+}
