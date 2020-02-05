@@ -1,5 +1,25 @@
 package api
 
+// See https://developers.onelogin.com/api-docs/1/users/user-resource
+const (
+	StateUnapproved = iota
+	StateApproved
+	StateRejected
+	StateUnlicensed
+)
+
+const (
+	StatusUnactivated = iota
+	StatusActive
+	StatusSuspended
+	StatusLocked
+	StatusPasswordExpired
+	StatusPasswordReset
+	_ // index ignored. See https://developers.onelogin.com/api-docs/1/users/user-resource
+	StatusPasswordPending
+	StatusSecurityQuestions
+)
+
 // User struct
 type User struct {
 	Username      string            `json:"username"`
